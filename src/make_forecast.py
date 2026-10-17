@@ -48,10 +48,14 @@ ENTIRELY BELOW the point means the model has a systematic festival-month bias;
 it is NOT evidence that the forecast is fine. `point_in_range` flags this.
 
 Run it with:   python src/make_forecast.py
+
+The output CSV is treated as FROZEN: if it already exists the script refuses
+to overwrite it and exits with an error. Pass --force to overwrite anyway.
 """
 
 from __future__ import annotations
 
+import argparse
 import sys
 from pathlib import Path
 
@@ -268,7 +272,24 @@ def primary_mom_yoy(monthly: pd.DataFrame, rows: pd.DataFrame, primaries: dict
     return pd.DataFrame(out)
 
 
-def main() -> None:
+def parse_args(argv=None) -> argparse.Namespace:
+    ap = argparse.ArgumentParser(
+        description="Generate the published Oct/Nov 2026 UPI forecast CSV.")
+    ap.add_argument("--force", action="store_true",
+                    help="overwrite the output CSV if it already exists")
+    return ap.parse_args(argv)
+
+
+def main(force: bool = False) -> None:
+    if OUT_CSV.exists() and not force:
+        print(
+            f"ERROR: {OUT_CSV} already exists.\n"
+            "The published forecast file is frozen; refusing to overwrite it.\n"
+            "Re-run with --force to overwrite.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
     monthly = pd.read_csv(PROCESSED / "upi_monthly.csv", parse_dates=["month"])
     festivals = pd.read_csv(PROCESSED / "festivals.csv",
                             parse_dates=["start_date", "end_date"])
@@ -311,4 +332,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    args = parse_args()
+    main(force=args.force)

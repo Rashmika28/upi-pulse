@@ -1,1 +1,6 @@
 month,target,error_pct,z,direction,calendar_assoc
+2024-10,avg_daily_volume,5.5,3.97,above,"Festival timing. Diwali 31 Oct - 1 Nov 2024 (majority-Oct, so flagged to October) and Navratri+Dussehra 3-12 Oct. A full festival month."
+2024-11,avg_daily_volume,-2.76,-2.55,below,"Festival timing shift. With Diwali at the end of October, the festive spend landed in October; November had no festival to lift it."
+2024-10,avg_daily_value,8.9,3.99,above,Same festival timing as above.
+2025-10,avg_daily_value,5.46,2.45,above,Festival timing. Diwali 20-21 Oct 2025 - the whole festive season sat inside October.
+2026-02,avg_daily_value,4.49,2.01,above,unexplained (no festival; 28-day month)
